@@ -1,0 +1,41 @@
+{
+  "usuario_marketing": {
+    "username": "usuario_marketing",
+    "password": "marketing123",
+    "role": "marketing",
+    "permissoes": {
+      "clientes": [
+        "read"
+      ],
+      "produtos": [
+        "read"
+      ]
+    }
+  },
+  "usuario_produtos": {
+    "username": "usuario_produtos",
+    "password": "produtos123",
+    "role": "produtos",
+    "permissoes": {
+      "produtos": [
+        "read",
+        "write"
+      ]
+    }
+  },
+  "admin": {
+    "username": "admin",
+    "password": "admin123",
+    "role": "admin",
+    "permissoes": {
+      "clientes": [
+        "read",
+        "write"
+      ],
+      "produtos": [
+        "read",
+        "write"
+      ]
+    }
+  }
+}

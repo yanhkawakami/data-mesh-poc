@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .dashboard-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label, select, input, button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+        select, input, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Bem-vindo, {{ username }}!</h1>
+
+        <h2>Seus dados disponíveis para download:</h2>
+        <ul>
+            {% for dominio, permissoes in user.permissoes.items() %}
+                {% if "read" in permissoes %}
+                    <li>
+                        <strong>{{ dominio|capitalize }}</strong>:
+                        <a href="/download/{{ dominio }}?username={{ username }}">Baixar CSV</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h2>Enviar novo dado</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="dominio">Escolha o domínio:</label>
+            <select name="dominio" id="dominio" required>
+                {% for dominio in dominios_disponiveis %}
+                    {% if "write" in user.permissoes.get(dominio, []) %}
+                        <option value="{{ dominio }}">{{ dominio|capitalize }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <label for="file">Selecione o arquivo CSV:</label>
+            <input type="file" name="file" required>
+
+            <label for="usuarios">Escolha os usuários que terão acesso:</label>
+            <select name="usuarios" id="usuarios" multiple required>
+                {% for usuario in todos_usuarios %}
+                    {% if usuario != username %}
+                        <option value="{{ usuario }}">{{ usuario }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <input type="hidden" name="username" value="{{ username }}">
+            <button type="submit">Upload</button>
+        </form>
+
+        <h2>Logout</h2>
+        <form action="/logout" method="post">
+            <button type="submit">Sair</button>
+        </form>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

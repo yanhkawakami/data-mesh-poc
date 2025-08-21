@@ -1,0 +1,31 @@
+!DOCTYPE html
+html lang=pt-BR
+head
+    meta charset=UTF-8
+    meta name=viewport content=width=device-width, initial-scale=1.0
+    titleData Meshtitle
+head
+body
+    h1Domínio de Marketingh1
+    table border=1
+        thead
+            tr
+                thCampanhath
+                thCanalth
+                thStatusth
+                thData de Envioth
+            tr
+        thead
+        tbody
+            {% for item in data %}
+                tr
+                    td{{ item['campanha'] }}td
+                    td{{ item['canal'] }}td
+                    td{{ item['status'] }}td
+                    td{{ item['data_envio'] }}td
+                tr
+            {% endfor %}
+        tbody
+    table
+body
+html
